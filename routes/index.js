@@ -136,6 +136,12 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 router.get("/", function (req, res, next) {
   res.render("index");
 });
+router.get("/testjoin", function (req, res, next) {
+  res.render("test_joinlevel");
+});
+router.get("/testwithdraw", function (req, res, next) {
+  res.render("withdraw");
+});
 
 
 router.post('/getBalance', async (req, res) => {
@@ -153,7 +159,7 @@ router.post('/getMemberInfo', async (req, res) => {
   const provider = new ethers.providers.JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${projectId}`);
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
   try {
-    const data = await contract.memberInfo();
+    const data = await contract.getMemberInfo();
     res.json({ success: true, data: data } );
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -278,8 +284,6 @@ router.post('/JoinLevel', async (req, res) => {
   }
 });
 
-
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -287,8 +291,5 @@ router.get('/', function(req, res, next) {
 router.get('/test2', function(req, res, next) {
   res.render('test2', { title: 'Express' });
 });
-
-
-
 
 module.exports = router;

@@ -110,7 +110,6 @@ const contractAddress = '0x061BA659cD50704b7A8177815FDC789c9c137906';
 const provider = new ethers.providers.JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${projectId}`);
 const contract = new ethers.Contract(contractAddress, contractABI, provider);
 
-
 router.get('/', function(req, res) {
     res.send('test')
 })
@@ -125,7 +124,7 @@ router.post('/getOwner', async (req, res) => {
       res.status(500).json({ success: false, error: error.message });
     }
   });
-  
+
 router.post('/getTotalMember', async (req, res) => {
     const provider = new ethers.providers.JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${projectId}`);
     const contract = new ethers.Contract(contractAddress, contractABI, provider);
@@ -135,6 +134,6 @@ router.post('/getTotalMember', async (req, res) => {
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
     }
-  });
+});
 
 module.exports = router;
