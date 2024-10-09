@@ -142,6 +142,9 @@ router.get("/testjoin", function (req, res, next) {
 router.get("/testwithdraw", function (req, res, next) {
   res.render("withdraw");
 });
+router.get('/build', function(req, res, next) {
+  res.render('test2')
+})
 
 
 router.post('/getBalance', async (req, res) => {
