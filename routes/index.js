@@ -112,6 +112,7 @@ const contractABI = [
 const contractAddress = '0x061BA659cD50704b7A8177815FDC789c9c137906';
 const provider = new ethers.providers.JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${projectId}`);
 const contract = new ethers.Contract(contractAddress, contractABI, provider);
+
 // async function callContract() {
 //   try {
 //     const data = await contract.owner();

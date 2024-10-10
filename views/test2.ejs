@@ -1,615 +1,686 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete MML Contract Test Page</title>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
-    <script>
-        let web3;
-        let contract;
-        const contractAddress = '0xC79E15AB9da782ad4093dCA07F967040C2192f85';
-        const contractABI = [
-	{
-		"inputs": [
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Optimized MML Contract Test Page</title>
+	<script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script>
+		let web3;
+		let contract;
+		const contractAddress = '0xC79E15AB9da782ad4093dCA07F967040C2192f85';
+		const contractABI = [
 			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
 			},
 			{
-				"internalType": "uint256",
-				"name": "maxMembers",
-				"type": "uint256"
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "memberAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "level",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "referrerAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "MemberAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "memberAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "level",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "referrerAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "round",
+						"type": "uint256"
+					}
+				],
+				"name": "MemberJoined",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "level",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "round",
+						"type": "uint256"
+					}
+				],
+				"name": "RoundCompleted",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "maxMembers",
+						"type": "uint256"
+					}
+				],
+				"name": "addLevel",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "checkBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "defaultReferrer",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "level",
+						"type": "uint256"
+					}
+				],
+				"name": "getLevelInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "maxMembers",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRound",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentMemberCount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "level",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "roundNumber",
+						"type": "uint256"
+					}
+				],
+				"name": "getLevelRoundInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "returnedRoundNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address[]",
+						"name": "returnedMembers",
+						"type": "address[]"
+					},
+					{
+						"internalType": "bool",
+						"name": "returnedCompleted",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "memberAddress",
+						"type": "address"
+					}
+				],
+				"name": "getMemberInfo",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "memberAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "level",
+						"type": "uint256"
+					}
+				],
+				"name": "getMemberLevelInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getTotalMembers",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "referrerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "desiredLevel",
+						"type": "uint256"
+					}
+				],
+				"name": "joinLevel",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "level1Members",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "levels",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "maxMembers",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "currentRound",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "members",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "memberAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "level",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "downlines",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalPaid",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalMembers",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "level",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					}
+				],
+				"name": "updateLevelPrice",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			}
-		],
-		"name": "addLevel",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "referrerAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "desiredLevel",
-				"type": "uint256"
-			}
-		],
-		"name": "joinLevel",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "memberAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "level",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "referrerAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "MemberAdded",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "memberAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "level",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "referrerAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "round",
-				"type": "uint256"
-			}
-		],
-		"name": "MemberJoined",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "level",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "round",
-				"type": "uint256"
-			}
-		],
-		"name": "RoundCompleted",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "level",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			}
-		],
-		"name": "updateLevelPrice",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "checkBalance",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "defaultReferrer",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "level",
-				"type": "uint256"
-			}
-		],
-		"name": "getLevelInfo",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "maxMembers",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "currentRound",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "currentMemberCount",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "level",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "roundNumber",
-				"type": "uint256"
-			}
-		],
-		"name": "getLevelRoundInfo",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "returnedRoundNum",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address[]",
-				"name": "returnedMembers",
-				"type": "address[]"
-			},
-			{
-				"internalType": "bool",
-				"name": "returnedCompleted",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "memberAddress",
-				"type": "address"
-			}
-		],
-		"name": "getMemberInfo",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "memberAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "level",
-				"type": "uint256"
-			}
-		],
-		"name": "getMemberLevelInfo",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTotalMembers",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "level1Members",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "levels",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "maxMembers",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "currentRound",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "members",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "memberAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "level",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "downlines",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "totalPaid",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "totalMembers",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]; // ใส่ ABI ของสัญญา MML ที่นี่
+		];
 
-        async function initWeb3() {
-            if (typeof window.ethereum !== 'undefined') {
-                web3 = new Web3(window.ethereum);
-                try {
-                    await window.ethereum.enable();
-                    contract = new web3.eth.Contract(contractABI, contractAddress);
-                    console.log('Web3 initialized');
-                } catch (error) {
-                    console.error("User denied account access");
-                }
-            } else {
-                console.log('Please install MetaMask!');
-            }
-        }
+		const wsUrl = 'wss://polygon-mainnet.infura.io/ws/v3/7019c0c0ff9c421d9445919ffa54a92e';
 
-        async function joinLevel() {
-            const referrer = document.getElementById('referrer').value;
-            const level = document.getElementById('level').value;
-            const amount = web3.utils.toWei(document.getElementById('amount').value, 'ether');
-            
-            try {
-                const accounts = await web3.eth.getAccounts();
-                await contract.methods.joinLevel(referrer, level).send({
-                    from: accounts[0],
-                    value: amount
-                });
-                alert('Successfully joined level!');
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
+		async function initWeb3() {
+			if (window.ethereum) {
+				web3 = new Web3(window.ethereum);
+				try {
+					await window.ethereum.enable();
+					console.log('Connected using MetaMask');
+				} catch (error) {
+					console.error("User denied account access");
+					useWebSocket();
+					return;
+				}
+			} else {
+				useWebSocket();
+			}
 
-        async function getMemberInfo() {
-            const address = document.getElementById('memberAddress').value;
-            try {
-                const info = await contract.methods.getMemberInfo(address).call();
-                document.getElementById('memberInfo').innerText = JSON.stringify(info, null, 2);
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
+			contract = new web3.eth.Contract(contractABI, contractAddress);
+			console.log('Web3 initialized');
 
-        async function getMemberLevelInfo() {
-            const address = document.getElementById('memberLevelAddress').value;
-            const level = document.getElementById('memberLevel').value;
-            try {
-                const info = await contract.methods.getMemberLevelInfo(address, level).call();
-                document.getElementById('memberLevelInfo').innerText = JSON.stringify(info, null, 2);
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
+			listenForEvents();
+			updateTotalMembers();
+		}
 
-        async function getTotalMembers() {
-            try {
-                const total = await contract.methods.getTotalMembers().call();
-                document.getElementById('totalMembers').innerText = total;
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
+		function useWebSocket() {
+			web3 = new Web3(new Web3.providers.WebsocketProvider(wsUrl));
+			console.log('Connected using WebSocket');
+			document.getElementById('walletWarning').style.display = 'block';
+		}
 
-        async function checkBalance() {
-            try {
-                const accounts = await web3.eth.getAccounts();
-                const balance = await contract.methods.checkBalance().call({from: accounts[0]});
-                document.getElementById('balance').innerText = web3.utils.fromWei(balance, 'ether') + ' ETH';
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
+		async function getGasPrice() {
+			try {
+				const response = await fetch('https://gasstation-mainnet.matic.network/v2');
+				const json = await response.json();
+				return web3.utils.toWei(json.rapid.maxFee.toString(), 'gwei');
+				// return web3.utils.toWei(json.fast.maxFee.toString(), 'gwei');
+			} catch (error) {
+				console.error('Error fetching gas price:', error);
+				return web3.utils.toWei('50', 'gwei'); // Fallback gas price
+			}
+		}
 
-        async function addLevel() {
-            const price = web3.utils.toWei(document.getElementById('newLevelPrice').value, 'ether');
-            const maxMembers = document.getElementById('newLevelMaxMembers').value;
-            try {
-                const accounts = await web3.eth.getAccounts();
-                await contract.methods.addLevel(price, maxMembers).send({from: accounts[0]});
-                alert('New level added successfully!');
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
 
-        async function updateLevelPrice() {
-            const level = document.getElementById('updateLevel').value;
-            const price = web3.utils.toWei(document.getElementById('updatePrice').value, 'ether');
-            try {
-                const accounts = await web3.eth.getAccounts();
-                await contract.methods.updateLevelPrice(level, price).send({from: accounts[0]});
-                alert('Level price updated successfully!');
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
 
-        async function getLevelInfo() {
-            const level = document.getElementById('infoLevel').value;
-            try {
-                const info = await contract.methods.getLevelInfo(level).call();
-                document.getElementById('levelInfo').innerText = JSON.stringify(info, null, 2);
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
+		async function batchGetInfo(address, level) {
+			const batch = new web3.BatchRequest();
 
-        async function getLevelRoundInfo() {
-            const level = document.getElementById('roundInfoLevel').value;
-            const round = document.getElementById('roundNumber').value;
-            try {
-                const info = await contract.methods.getLevelRoundInfo(level, round).call();
-                document.getElementById('levelRoundInfo').innerText = JSON.stringify(info, null, 2);
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        }
+			const memberInfoPromise = new Promise((resolve) => {
+				batch.add(contract.methods.getMemberInfo(address).call.request({}, (error, result) => {
+					resolve(result);
+				}));
+			});
 
-        window.onload = initWeb3;
-    </script>
+			const memberLevelInfoPromise = new Promise((resolve) => {
+				batch.add(contract.methods.getMemberLevelInfo(address, level).call.request({}, (error, result) => {
+					resolve(result);
+				}));
+			});
+
+			const levelInfoPromise = new Promise((resolve) => {
+				batch.add(contract.methods.getLevelInfo(level).call.request({}, (error, result) => {
+					resolve(result);
+				}));
+			});
+
+			batch.execute();
+
+			const [memberInfo, memberLevelInfo, levelInfo] = await Promise.all([memberInfoPromise, memberLevelInfoPromise, levelInfoPromise]);
+			return { memberInfo, memberLevelInfo, levelInfo };
+		}
+
+		async function joinLevel() {
+			const referrer = document.getElementById('referrer').value;
+			const level = document.getElementById('level').value;
+			const amount = web3.utils.toWei(document.getElementById('amount').value, 'ether');
+
+			try {
+				const accounts = await web3.eth.getAccounts();
+				const gasPrice = await getGasPrice();
+				console.log(gasPrice)
+				await contract.methods.joinLevel(referrer, level).send({
+					from: accounts[0],
+					value: amount,
+					gasPrice: gasPrice
+				});
+				alert('Successfully joined level!');
+			} catch (error) {
+				alert('Error: ' + error.message);
+			}
+		}
+
+		async function getMemberInfo() {
+			const address = document.getElementById('memberAddress').value;
+			const level = document.getElementById('memberLevel').value;
+			try {
+				const info = await batchGetInfo(address, level);
+				document.getElementById('memberInfo').innerText = JSON.stringify(info, null, 2);
+			} catch (error) {
+				alert('Error: ' + error.message);
+			}
+		}
+
+		async function updateTotalMembers() {
+			try {
+				const total = await contract.methods.getTotalMembers().call();
+				document.getElementById('totalMembers').innerText = total;
+			} catch (error) {
+				console.error('Error getting total members:', error);
+			}
+		}
+
+		async function checkBalance() {
+			try {
+				const accounts = await web3.eth.getAccounts();
+				const balance = await contract.methods.checkBalance().call({ from: accounts[0] });
+				document.getElementById('balance').innerText = web3.utils.fromWei(balance, 'ether') + ' MATIC';
+			} catch (error) {
+				alert('Error: ' + error.message);
+			}
+		}
+
+		async function addLevel() {
+			const price = web3.utils.toWei(document.getElementById('newLevelPrice').value, 'ether');
+			const maxMembers = document.getElementById('newLevelMaxMembers').value;
+			try {
+				const accounts = await web3.eth.getAccounts();
+				const gasPrice = await getGasPrice();
+				await contract.methods.addLevel(price, maxMembers).send({
+					from: accounts[0],
+					gasPrice: gasPrice
+				});
+				alert('New level added successfully!');
+			} catch (error) {
+				alert('Error: ' + error.message);
+			}
+		}
+
+		async function updateLevelPrice() {
+			const level = document.getElementById('updateLevel').value;
+			const price = web3.utils.toWei(document.getElementById('updatePrice').value, 'ether');
+			try {
+				const accounts = await web3.eth.getAccounts();
+				const gasPrice = await getGasPrice();
+				await contract.methods.updateLevelPrice(level, price).send({
+					from: accounts[0],
+					gasPrice: gasPrice
+				});
+				alert('Level price updated successfully!');
+			} catch (error) {
+				alert('Error: ' + error.message);
+			}
+		}
+
+		async function getLevelInfo() {
+			const level = document.getElementById('infoLevel').value;
+			try {
+				const info = await contract.methods.getLevelInfo(level).call();
+				document.getElementById('levelInfo').innerText = JSON.stringify(info, null, 2);
+			} catch (error) {
+				alert('Error: ' + error.message);
+			}
+		}
+
+		async function getLevelRoundInfo() {
+			const level = document.getElementById('roundInfoLevel').value;
+			const round = document.getElementById('roundNumber').value;
+			try {
+				const info = await contract.methods.getLevelRoundInfo(level, round).call();
+				document.getElementById('levelRoundInfo').innerText = JSON.stringify(info, null, 2);
+			} catch (error) {
+				alert('Error: ' + error.message);
+			}
+		}
+
+		function listenForEvents() {
+			contract.events.MemberJoined({}, (error, event) => {
+				if (error) {
+					console.error("Error on MemberJoined event", error);
+					return;
+				}
+				console.log("New member joined:", event.returnValues);
+				updateTotalMembers();
+			});
+
+			contract.events.RoundCompleted({}, (error, event) => {
+				if (error) {
+					console.error("Error on RoundCompleted event", error);
+					return;
+				}
+				console.log("Round completed:", event.returnValues);
+				// Update UI or trigger other actions as needed
+			});
+		}
+
+		window.onload = initWeb3;
+	</script>
 </head>
+
 <body>
-    <h1>Complete MML Contract Test Page</h1>
+	<h1>Optimized MML Contract Test Page</h1>
+	<div id="walletWarning" style="display: none; color: red;">
+		Warning: No wallet detected. Using WebSocket connection. Some functions may be read-only.
+	</div>
 
-    <h2>Join Level</h2>
-    <input id="referrer" type="text" placeholder="Referrer Address">
-    <input id="level" type="number" placeholder="Desired Level">
-    <input id="amount" type="number" step="0.01" placeholder="Amount in ETH">
-    <button onclick="joinLevel()">Join Level</button>
+	<h2>Join Level</h2>
+	<input id="referrer" type="text" placeholder="Referrer Address">
+	<input id="level" type="number" placeholder="Desired Level">
+	<input id="amount" type="number" step="0.01" placeholder="Amount in MATIC">
+	<button onclick="joinLevel()">Join Level</button>
 
-    <h2>Get Level Info</h2>
-    <input id="infoLevel" type="number" placeholder="Level">
-    <button onclick="getLevelInfo()">Get Info</button>
-    <pre id="levelInfo"></pre>
+	<h2>Get Member and Level Info</h2>
+	<input id="memberAddress" type="text" placeholder="Member Address">
+	<input id="memberLevel" type="number" placeholder="Level">
+	<button onclick="getMemberInfo()">Get Info</button>
+	<pre id="memberInfo"></pre>
 
-    <h2>Get Level Round Info</h2>
-    <input id="roundInfoLevel" type="number" placeholder="Level">
-    <input id="roundNumber" type="number" placeholder="Round Number">
-    <button onclick="getLevelRoundInfo()">Get Round Info</button>
-    <pre id="levelRoundInfo"></pre>
+	<h2>Get Level Info</h2>
+	<input id="infoLevel" type="number" placeholder="Level">
+	<button onclick="getLevelInfo()">Get Info</button>
+	<pre id="levelInfo"></pre>
 
-    <h2>Get Member Info</h2>
-    <input id="memberAddress" type="text" placeholder="Member Address">
-    <button onclick="getMemberInfo()">Get Info</button>
-    <pre id="memberInfo"></pre>
+	<h2>Get Level Round Info</h2>
+	<input id="roundInfoLevel" type="number" placeholder="Level">
+	<input id="roundNumber" type="number" placeholder="Round Number">
+	<button onclick="getLevelRoundInfo()">Get Round Info</button>
+	<pre id="levelRoundInfo"></pre>
 
-    <h2>Get Member Level Info</h2>
-    <input id="memberLevelAddress" type="text" placeholder="Member Address">
-    <input id="memberLevel" type="number" placeholder="Level">
-    <button onclick="getMemberLevelInfo()">Get Level Info</button>
-    <pre id="memberLevelInfo"></pre>
+	<h2>Total Members</h2>
+	<p>Total Members: <span id="totalMembers">Loading...</span></p>
 
-    <h2>Get Total Members</h2>
-    <button onclick="getTotalMembers()">Get Total</button>
-    <p>Total Members: <span id="totalMembers"></span></p>
+	<h2>Check Balance</h2>
+	<button onclick="checkBalance()">Check Balance</button>
+	<p>Your Balance: <span id="balance"></span></p>
 
-    <h2>Check Balance</h2>
-    <button onclick="checkBalance()">Check Balance</button>
-    <p>Your Balance: <span id="balance"></span></p>
+	<h2>Add Level (Owner Only)</h2>
+	<input id="newLevelPrice" type="number" step="0.01" placeholder="Price in MATIC">
+	<input id="newLevelMaxMembers" type="number" placeholder="Max Members">
+	<button onclick="addLevel()">Add Level</button>
 
-    <h2>Add Level (Owner Only)</h2>
-    <input id="newLevelPrice" type="number" step="0.01" placeholder="Price in ETH">
-    <input id="newLevelMaxMembers" type="number" placeholder="Max Members">
-    <button onclick="addLevel()">Add Level</button>
+	<h2>Update Level Price (Owner Only)</h2>
+	<input id="updateLevel" type="number" placeholder="Level">
+	<input id="updatePrice" type="number" step="0.01" placeholder="New Price in MATIC">
+	<button onclick="updateLevelPrice()">Update Price</button>
 
-    <h2>Update Level Price (Owner Only)</h2>
-    <input id="updateLevel" type="number" placeholder="Level">
-    <input id="updatePrice" type="number" step="0.01" placeholder="New Price in ETH">
-    <button onclick="updateLevelPrice()">Update Price</button>
-
-   
-
-    <h2>Get Level Round Info</h2>
-    <input id="roundInfoLevel" type="number" placeholder="Level">
-    <input id="roundNumber" type="number" placeholder="Round Number">
-    <button onclick="getLevelRoundInfo()">Get Round Info</button>
-    <pre id="levelRoundInfo"></pre>
 </body>
+
 </html>
