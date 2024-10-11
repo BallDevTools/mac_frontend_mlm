@@ -137,12 +137,10 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 router.get("/", function (req, res, next) {
   res.render("index");
 });
-router.get("/testjoin", function (req, res, next) {
-  res.render("test_joinlevel");
+router.get("/dashboard", function (req, res, next) {
+  res.render("dashboard");
 });
-router.get("/testwithdraw", function (req, res, next) {
-  res.render("withdraw");
-});
+
 router.get('/build', function(req, res, next) {
   res.render('test2')
 })

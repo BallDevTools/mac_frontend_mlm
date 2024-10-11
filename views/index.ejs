@@ -1,271 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test PJ</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-  </head>
 
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-          </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChainEx</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
 
-          <button
-            class="btn btn-outline-success"
-            type="submit"
-            id="connectWalletButton"
-          >
-            Connect Wallet
-          </button>
-        </div>
-      </div>
-    </nav>
-    <div class="container">
-      <div class="row py-3">
-        <h1>Customer Menu</h1>
-        <button
-          type="button"
-          class="btn btn-outline-secondary m-2"
-          id="AddLevel"
-        >
-          Add Level
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-secondary m-2"
-          id="UpdateLevelPrice"
-        >
-          Update Level Price
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-secondary m-2"
-          id="Withdraw"
-        >
-          Withdraw
-        </button>
-        <button type="button" class="btn btn-outline-info m-2" id="Balance">
-          Check Balance
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-info m-2"
-          id="GetMemberInfo"
-        >
-          GetMemberInfo
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-info m-2"
-          id="GetTotalMember"
-        >
-          GetTotalMember
-        </button>
-        <button type="button" class="btn btn-outline-info m-2" id="Level">
-          Levels
-        </button>
-        <button type="button" class="btn btn-outline-info m-2" id="Members">
-          Members
-        </button>
-        <button type="button" class="btn btn-outline-info m-2" id="Owner">
-          Owner
-        </button>
-        <button type="button" class="btn btn-outline-info m-2" id="TotalMember">
-          TotalMember
-        </button>
-        <div class="input-group m-3">
-          <button class="btn btn-outline-warning" type="button" id="BuyLevel">BuyLevel</button>
-          <input type="number" class="form-control" name="buyLevel" value="" id="inputBuylevel" placeholder="desiredLevel">
-        </div>
-        <div class="input-group m-3">
-          <button class="btn btn-outline-warning" type="button" id="JoinLevel">JoinLevel</button>
-          <input type="text" class="form-control" name="referrerAddress" id="inputReferrerAddress" value="" placeholder="referrerAddress">
-          <input type="text" class="form-control" name="desiredLevel" id="inputJoinLevel" value="" placeholder="desiredLevel">
+<body>
+
+  <script>
+    
+    if (localStorage.getItem("address")) {
+      console.log('1')
+      window.location = "http://localhost:5000/dashboard/"
+    } else {
+      console.log('2')
+    }
+  </script>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">ChainEx</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        </ul>
+        <div class="d-flex">
+          <button class="btn btn-outline-light" id="connectButton">Connect</button>
+          <button class="btn btn-outline-danger" id="logoutButton">logout</button>
+
         </div>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"
-      integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script>
-      if (typeof window.ethereum !== "undefined") {
-        console.log("MetaMask is installed!");
-      }
-      async function connectWallet() {
+  </nav>
+
+  <div class="container-fluid">
+    <h1 id="status"></h1>
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.13.0/web3.min.js"
+    integrity="sha512-jHiK3Zbka2/b4MgP8FQ3rdUtTffY0R6yLHmyvj0rXPCBZe15nfIOFugwR/nVz9kqQso0OyW6hvXaW07IUW5W2Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    let web3;
+    const connectButton = document.getElementById('connectButton');
+    const statusDiv = document.getElementById('status');
+
+    async function connectWallet() {
+      if (typeof window.ethereum !== 'undefined') {
         try {
-          const accounts = await window.ethereum.request({
-            method: "eth_requestAccounts",
-          });
-          localStorage.setItem('Address_Wallet', accounts[0])
-          console.log("Connected", accounts[0]);
+          // Request account access
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          web3 = new Web3(window.ethereum);
+
+          const accounts = await web3.eth.getAccounts();
+          const account = accounts[0];
+          statusDiv.innerHTML = `Connected: ${account}`;
+          localStorage.setItem("address", account);
+
+          // You can add more functionality here, like getting the balance
+          const balance = await web3.eth.getBalance(account);
+          const ethBalance = web3.utils.fromWei(balance, 'ether');
+          let ethBalanceNum = Number(ethBalance);
+          statusDiv.innerHTML += `<br>Balance: ${ethBalanceNum.toFixed(4)} `;
+
+          connectButton.innerHTML = 'Wallet Connected';
+          connectButton.disabled = true;
         } catch (error) {
-          console.error("Error connecting to MetaMask", error);
+          console.error(error);
+          statusDiv.innerHTML = 'Failed to connect wallet';
         }
+      } else {
+        statusDiv.innerHTML = 'Please install MetaMask!';
       }
-      document
-        .getElementById("connectWalletButton")
-        .addEventListener("click", connectWallet);
-    </script>
+    }
 
-    <script>
+    connectButton.onclick = connectWallet;
 
-      document
-        .getElementById("AddLevel")
-        .addEventListener("click", function () {
-          fetch("/getOwner", { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => alert(data.data))
-            .catch((error) => console.error("Error:", error));
-        });
-      document
-        .getElementById("UpdateLevelPrice")
-        .addEventListener("click", function () {
-          fetch("/updateLevel", { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => alert(data.data))
-            .catch((error) => console.error("Error:", error));
-        });
-      document
-        .getElementById("Withdraw")
-        .addEventListener("click", function () {
-          fetch("/withdraw", { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => alert(data.data))
-            .catch((error) => console.error("Error:", error));
-        });
-      document.getElementById("Balance").addEventListener("click", function () {
-        fetch("/getBalance", { method: "POST" })
-          .then((response) => response.json())
-          .then((data) => alert(data.data))
-          .catch((error) => console.error("Error:", error));
-      });
-      document
-        .getElementById("GetMemberInfo")
-        .addEventListener("click", function () {
-          fetch("/getMemberInfo", { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => alert(data.data))
-            .catch((error) => console.error("Error:", error));
-        });
-      document
-        .getElementById("GetTotalMember")
-        .addEventListener("click", function () {
-          fetch("/getTotalMember", { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => alert(data.data))
-            .catch((error) => console.error("Error:", error));
-        });
-      document.getElementById("Level").addEventListener("click", function () {
-        axios({
-          method: "post",
-          url: "getLevel",
-          data: {
-            level: 2,
-          },
-        })
-          .then((data) => {
-            let price = parseInt(data.data.data[0].hex, 16);
-            let maxMember = parseInt(data.data.data[1].hex, 16);
-            alert(`price: ${price} | Max Member: ${maxMember}`)
-          })
-          .catch((error) => console.error("Error:", error));
-      });
-      document.getElementById("Members").addEventListener("click", function () {
-        fetch("/getOwner", { method: "POST" })
-          .then((response) => response.json())
-          .then((data) => alert(data.data))
-          .catch((error) => console.error("Error:", error));
-      });
-      document.getElementById("Owner").addEventListener("click", function () {
-        fetch("/getOwner", { method: "POST" })
-          .then((response) => response.json())
-          .then((data) => alert(data.data))
-          .catch((error) => console.error("Error:", error));
-      });
-      document
-        .getElementById("TotalMember")
-        .addEventListener("click", function () {
-          axios({
-          method: "post",
-          url: "/getTotalMember"
-        })
-          .then((data) => {
-            console.log(data)
-          })
-          .catch((error) => console.error("Error:", error));
-        });
-      document
-        .getElementById("BuyLevel")
-        .addEventListener("click", function () {
-          axios({
-          method: "post",
-          url: "/BuyLevel",
-          data: {
-            referrer: $('#inputReferrerAddress').val(),
-          },
-        })
-          .then((data) => {
-            let price = parseInt(data.data.data[0].hex, 16);
-            let maxMember = parseInt(data.data.data[1].hex, 16);
-            alert(`price: ${price} | Max Member: ${maxMember}`)
-          })
-          .catch((error) => console.error("Error:", error));
-      });
-      document
-        .getElementById("JoinLevel")
-        .addEventListener("click", function () {
-          axios({
-          method: "post",
-          url: "/JoinLevel",
-          data: {
-            referrer: $('#inputBuylevel').val(),
-            level: $('#inputJoinLevel').val(),
-          },
-        })
-          .then((data) => {
-            let price = parseInt(data.data.data[0].hex, 16);
-            let maxMember = parseInt(data.data.data[1].hex, 16);
-            alert(`price: ${price} | Max Member: ${maxMember}`)
-          })
-          .catch((error) => console.error("Error:", error));
-      });
 
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
