@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap v5.3.0 Landing Page Template" />
+    <meta name="keywords" content="bootstrap v5.3.0, premium, marketing, multipurpose" />
+    <meta content="Themesdesign" name="author" />
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="../frontend/images/favicon.ico" />
+
+    <!-- Materialdesign icon-->
+    <link rel="stylesheet" href="../frontend/css/materialdesignicons.min.css" type="text/css" />
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="../frontend/css/bootstrap.min.css" type="text/css" />
+
+    <!-- Custom css -->
+    <link rel="stylesheet" href="../frontend/css/style.min.css" type="text/css" />
+
+</head>
+
+<body>
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Landsay | Responsive Bootstrap 5 Landing Page Template | Themesdesign</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Premium Bootstrap v5.3.0 Landing Page Template" />
+        <meta name="keywords" content="bootstrap v5.3.0, premium, marketing, multipurpose" />
+        <meta content="Themesdesign" name="author" />
+
+        <!-- Bootstrap css -->
+        <link rel="stylesheet" href="../frontend/css/bootstrap.min.css" type="text/css" />
+
+        <!-- Custom css -->
+        <link rel="stylesheet" href="../frontend/css/style.min.css" type="text/css" />
+
+    </head>
+
+    <body>
+
+        <div class="authentication-bg min-vh-100">
+            <div class="container">
+                <div class="d-flex flex-column min-vh-100 px-3 pt-4">
+                    <div class="row justify-content-center my-auto">
+                        <div class="col-md-8 col-lg-6 col-xl-4">
+
+                            <div class="py-5">
+                                <div class="text-center">
+                                    <div class="mb-4">
+                                        <a href="index-1.html" class="d-block auth-logo">
+                                            <img src="../frontend/images/Home_w117x36.svg" alt="" height="45"
+                                                width="150">
+                                        </a>
+                                    </div>
+                                    <div class="mb-4 pb-2">
+                                        <h5 class="text-white">Welcome Back !</h5>
+                                        <p class="text-white-50 mb-0">Login to continue with Chainsx</p>
+                                    </div>
+                                </div>
+                                <form class="auth-form text-white">
+                                    <!-- <div class="mb-3">
+                                    <label class="form-label" for="email">Username</label>
+                                    <input type="text" class="form-control" id="username" placeholder="Username">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="userpassword">Password</label>
+                                    <input type="password" class="form-control" id="userpassword"
+                                        placeholder="Password">
+                                </div>
+                                <div class="mb-4">
+                                    <a href="reset-password.html" class="float-end text-white-50">Forgot Paasowrd</a>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">Remember Me</a></label>
+                                    </div>
+                                </div> -->
+                                    <div class="mt-3">
+                                        <button type="button" id="connectButton" class="btn btn-primary w-100">Login Now</button>
+                                    </div>
+                                </form>
+
+                                <div class="mt-5 text-center text-white-50">
+                                    <p>Don't have an account ? <a href="register.html"
+                                            class="fw-medium text-white text-decoration-underline"> Register </a></p>
+                                </div>
+                            </div>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+
+                    <div class="col-xl-12">
+                        <div class="text-center text-white-50 p-4">
+                            <p class="mb-0">
+                                <script>document.write(new Date().getFullYear())</script> &copy; Chainsx 
+                                <!-- <i class="mdi mdi-heart text-danger"></i> by
+                                <a href="https://themeforest.net/search/themesdesign"
+                                    class="text-muted">Themesdesign.</a> -->
+                            </p>
+                        </div>
+                    </div><!-- end col -->
+                </div>
+            </div><!-- end container -->
+        </div>
+        <!-- end authentication section -->
+
+        <!-- Bootstrap Js -->
+        <script src="../frontend/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.13.0/web3.min.js"
+            integrity="sha512-jHiK3Zbka2/b4MgP8FQ3rdUtTffY0R6yLHmyvj0rXPCBZe15nfIOFugwR/nVz9kqQso0OyW6hvXaW07IUW5W2Q=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            const connectButton = document.getElementById('connectButton');
+
+            async function connectWallet() {
+                if (typeof window.ethereum !== 'undefined') {
+                    try {
+                        await window.ethereum.request({ method: 'eth_requestAccounts' });
+                        const web3 = new Web3(window.ethereum);
+                        const accounts = await web3.eth.getAccounts();
+                        const account = accounts[0];
+                        console.log('Connected account:', account);
+                        connectButton.textContent = 'Wallet Connected';
+                    } catch (error) {
+                        console.error('Failed to connect wallet:', error);
+                        connectButton.textContent = 'Connection Failed';
+                    }
+                } else {
+                    console.log('MetaMask is not installed');
+                    alert('Please install MetaMask to use this feature');
+                    connectButton.textContent = 'MetaMask Not Found';
+                }
+            }
+            connectButton.addEventListener('click', connectWallet);
+        </script>
+    </body>
+
+    </html>

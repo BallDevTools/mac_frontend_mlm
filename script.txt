@@ -1,0 +1,76 @@
+    <script>
+        $(document).ready(function(){
+        let web3;
+        let currentAccount = null;
+        const connectButton = document.getElementById('connectButton');
+        const logoutButton = document.getElementById('logoutButton');
+        const statusDiv = document.getElementById('status');
+
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Request account access
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    web3 = new Web3(window.ethereum);
+                    
+                    const accounts = await web3.eth.getAccounts();
+                    currentAccount = accounts[0];
+                    updateUI();
+                    
+                    // Listen for account changes
+                    window.ethereum.on('accountsChanged', handleAccountsChanged);
+                } catch (error) {
+                    console.error(error);
+                    statusDiv.innerHTML = 'Failed to connect wallet';
+                }
+            } else {
+                statusDiv.innerHTML = 'Please install MetaMask!';
+            }
+        }
+
+        function handleAccountsChanged(accounts) {
+            if (accounts.length === 0) {
+                // MetaMask is locked or the user has not connected any accounts
+                logout();
+            } else if (accounts[0] !== currentAccount) {
+                currentAccount = accounts[0];
+                updateUI();
+            }
+        }
+
+        function updateUI() {
+            if (currentAccount) {
+                statusDiv.innerHTML = `Connected: ${currentAccount}`;
+
+                $("#connectButton").removeClass('d-none')
+                $("#logoutButton").addClass('d-none')
+                // Get and display balance
+                web3.eth.getBalance(currentAccount).then(balance => {
+                    const ethBalance = web3.utils.fromWei(balance, 'ether');
+                    statusDiv.innerHTML += `<br>Balance: ${parseFloat(ethBalance).toFixed(4)} MATIC`;
+                });
+            } else {
+                statusDiv.innerHTML = 'Not connected';
+
+                $("#connectButton").addClass('d-none')
+                $("#logoutButton").removeAttr('d-none')
+            }
+        }
+
+        function logout() {
+            currentAccount = null;
+            web3 = null;
+            updateUI();
+        }
+
+        connectButton.onclick = connectWallet;
+        logoutButton.onclick = logout;
+
+        // Check if already connected
+        // if (typeof window.ethereum !== 'undefined') {
+        //     window.ethereum.request({ method: 'eth_accounts' })
+        //         .then(handleAccountsChanged)
+        //         .catch(console.error);
+        // }
+    });
+    </script>

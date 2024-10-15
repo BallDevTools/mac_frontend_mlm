@@ -26,27 +26,27 @@ async function testConnection() {
 //   testConnection();
 
 // path dashboard
-router.get('/login', function(req, res, next) {
-    res.render('backend/login');
-})
-router.get('/register', function(req, res, next) {
-    res.render('backend/register');
-})
+// router.get('/login', function(req, res, next) {
+//     res.render('backend/login');
+// })
+// router.get('/register', function(req, res, next) {
+//     res.render('backend/register');
+// })
 
-router.get('/dashboard', function(req, res, next) {
-    res.render('dashboard');
-})
+// router.get('/dashboard', function(req, res, next) {
+//     res.render('dashboard');
+// })
 
 
 
 // api backend
 
-router.post('/login', function(req, res, next) {
-    var {username, password} = req.body;
-    console.log(req.body)
-})
+// router.post('/login', function(req, res, next) {
+//     var {username, password} = req.body;
+//     console.log(req.body)
+// })
 
-router.post('/register', function(req, res, next) {
+// router.post('/register', function(req, res, next) {
 
-})
+// })
 module.exports = router;
